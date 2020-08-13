@@ -59,7 +59,7 @@ public class Purchase {
     }
 
     public void setNumberReceived(Long numberReceived) {
-        this.numberReceived = numberReceived;
+        this.numberReceived += numberReceived;
         this.onHandInventory += numberReceived;
     }
 
@@ -79,7 +79,7 @@ public class Purchase {
         this.onHandInventory = startingInventory;
         this.startingInventory = startingInventory;
     }
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+
     public Long getInventoryShipped() {
         return inventoryShipped;
     }
@@ -97,15 +97,11 @@ public class Purchase {
     public void setMinRequired(int minRequired) {
         this.minRequired = minRequired;
     }
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Long setShipInventory(Long n)
-    {
-        Long shipped = this.inventoryShipped + n;
-        this.inventoryShipped = shipped;
-        Long onHand = this.onHandInventory-n;
-        this.onHandInventory = onHand;
 
-        return this.inventoryShipped;
+    public void setShipInventory(Long n)
+    {
+         this.inventoryShipped += n;
+         this.onHandInventory-= n;
 
     }
     public Long getShipInventory()
@@ -113,6 +109,7 @@ public class Purchase {
         return this.inventoryShipped;
     }
     public void setInventoryShipped(Long inventoryShipped) {
-        this.inventoryShipped = inventoryShipped;
+        this.inventoryShipped += inventoryShipped;
+        this.onHandInventory -= inventoryShipped;
     }
 }

@@ -2,6 +2,8 @@ package com.galvanize.backend;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/purchases")
 public class PurchaseController {
@@ -17,6 +19,11 @@ public class PurchaseController {
     {
         return this.purchaseRepository.findAll();
     }
+    @GetMapping("/{id}")
+    public Optional<Purchase> getById(@PathVariable Long id)
+    {
+        return this.purchaseRepository.findById(id);
+    }
 
     @PostMapping("/add-purchase")
     public Purchase addPurchase(@RequestBody Purchase purchase)
@@ -27,10 +34,8 @@ public class PurchaseController {
     public String shipProduct( @PathVariable Long id, @PathVariable("qtyToShip") Long n)
     {
         Purchase shipProduct = this.purchaseRepository.findById(id).get();
-
-        shipProduct.setInventoryShipped(shipProduct.setShipInventory(n));
+        shipProduct.setInventoryShipped(n);
         shipProduct.getInventoryShipped();
-
 
         this.purchaseRepository.save(shipProduct);
         return"saved";
